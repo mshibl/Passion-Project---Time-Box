@@ -1,4 +1,4 @@
-var button = "<div id='timebox-app'><a id='auto-commit-button' class='btn btn-sm sidebar-button'>Set Time-Boxing</a></div>";
+var button = "<a id='start-timebox-app' class='btn btn-sm sidebar-button'>Set Time-Boxing</a>";
 var minutes = 24;
 var minutesReset = 24;
 var seconds = 5; // seconds set to 5 for testing purposes, should be 59
@@ -7,17 +7,17 @@ var resume = true;
 
 $('div.only-with-full-nav').append(button);
 
-$('#timebox-app').on('click',function(){
-  $('#auto-commit-button').hide();
-  $('div.only-with-full-nav').append("<h4>Time Box</h4> <form id='set-time-box'> <label>Minutes: </label> <input id='time-box-minutes-limit' type='number' min='1' max='60' placeholder='25'> <input type='submit' value='Start!'> </form>");
+$('#start-timebox-app').on('click',function(){
+  $('#start-timebox-app').hide();
+  $('div.only-with-full-nav').append("<div id=timebox-app><h4>Time Box</h4> <form id='set-time-box'> <label>Minutes: </label> <input id='time-box-minutes-limit' type='number' min='1' max='60' placeholder='25'> <input id='start-timebox-button' class='btn btn-sm sidebar-button' type='submit' value='Start!'> </form></div>");
 })
 
 $('div.only-with-full-nav').on('submit','#set-time-box',function(e){
   e.preventDefault();
   $('#set-time-box').hide();
-  $('div.only-with-full-nav').append("<div id='timer'> <span id='timer_mnts'></span>:<span id='timer_scds'></span> </div>");
-  $('div.only-with-full-nav').append("<button id='time-box-pause' type='button'>Pause</button>")
-  $('div.only-with-full-nav').append("<button id='time-box-reset' type='button'>Reset</button>")
+  $('#timebox-app').append("<div id='timer'> <span id='timer_mnts'></span>:<span id='timer_scds'></span> </div>");
+  $('#timebox-app').append("<button class='btn btn-sm sidebar-button' id='time-box-pause' type='button'>Pause</button>")
+  $('#timebox-app').append("<button class='btn btn-sm sidebar-button' id='time-box-reset' type='button'>Reset</button>")
   if($('#time-box-minutes-limit').val()){
     minutes = parseInt($('#time-box-minutes-limit').val()) -1;
     minutesReset = parseInt($('#time-box-minutes-limit').val()) -1;
@@ -35,29 +35,37 @@ $('div.only-with-full-nav').on('click','#time-box-pause',function(){
 })
 
 $('div.only-with-full-nav').on('click','#time-box-reset',function(){
-  alert('this will reset minutes'); // replace with confirmation button
-  seconds = 59;
-  minutes = minutesReset;
-  $('#timer_mnts').html(minutes);
+  if (confirm('this will reset the timer') == true){
+    resetTimer();
+  };
 })
 
 function myTimer(){
   if(resume == true){
-    $('#timer_scds').html(seconds - 1);
-    seconds -= 1;
-    if(seconds == 0){
-      if(minutes == 0){
-        alert("Time limit reached!\n\nCommit your work and take a break!");
+    if(minutes == 0 && seconds == 0){
+      if (confirm("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?") == true){
+        resetTimer();
       }
-      alert("Time limit reached!\n\nCommit your work and take a break!"); // This is for testing, it
+    }
+    if(seconds == 0){
+      // alert("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?"); // This is for testing
       seconds = 60
       minutes -= 1
       $('#timer_mnts').html(minutes);
+
       // document.getElementById('timer_mnts').innerHTML = minutes;
     }
+    $('#timer_scds').html(seconds - 1);
+    seconds -= 1;
   }
 }
 
+function resetTimer(){
+  seconds = 60;
+  minutes = minutesReset;
+  $('#timer_scds').html(seconds-1);
+  $('#timer_mnts').html(minutes);
+}
 
 
 

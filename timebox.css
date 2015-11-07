@@ -1,0 +1,49 @@
+/*body {
+  counter-reset:section;
+  background-color: gray;
+  font-family: Verdana;
+  max-width: 700px;
+  width: 400px;
+  width: 200px;
+  margin: 0 auto;
+}*/
+
+/*h1{
+  color: yellow;
+  font-size: 12px;
+}
+*/
+
+#timer {
+  text-align: center;
+  color: #6CC644;
+  font-size: 30px;
+  font-family: monospace;
+  padding: 0px 10px 10px 10px;
+  margin: auto;
+}
+
+#timebox-app h4{
+  text-align: center;
+  margin: auto;
+  padding: 0px 10px 0px 10px;
+  width: 60%
+}
+
+#timebox-app {
+  border: 1px solid #D8D8D8;
+  padding: 5px;
+}
+
+#timebox-app form{
+  text-align: center;
+  padding: 10px 10px 10px 10px;
+}
+
+#timebox-app label{
+  color: #6F6F6F;
+}
+
+#start-timebox-button {
+  margin: 5px 0px 0px 0px;
+}
