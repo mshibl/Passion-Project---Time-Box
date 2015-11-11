@@ -2,17 +2,25 @@
 <html>
   <head>
     <title>Github Auto-Commit</title>
-    <link rel="stylesheet" href="/test.css">
-    <script src="jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="/timebox.css">
+    <script src="/jquery-1.11.3.js"></script>
     <script src="popup.js"></script>
   </head>
 
-<!--   <body>
-    <h1>Github Auto-Commit</h1>
-    <button id="auto-commit-button">Start Auto-Commit</button>
-  </body> -->
-
   <body>
-    <button type='button'>Start timer</button>
+    <div id="timebox-app">
+      <h4>Time Box App</h4>
+      <form id='set-time-box'>
+        <label>Minutes: </label>
+        <input id='time-box-minutes-limit' type='number' min='1' max='60' value='25' placeholder='25'>
+        <input id='start-timebox-button' type='submit' value='Start!'>
+      </form>
+    </div>
+
+    <div id='timer'>
+      <span id='timer_mnts'></span>:<span id='timer_scds'></span><br>
+      <button class='btn btn-sm sidebar-button' id='time-box-pause' type='button'>Pause</button>
+      <button class='btn btn-sm sidebar-button' id='time-box-reset' type='button'>Reset</button>
+    </div>
   </body>
 </html>

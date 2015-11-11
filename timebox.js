@@ -3,7 +3,7 @@ var minutes = 24;
 var minutesReset = 24;
 var seconds = 5; // seconds set to 5 for testing purposes, should be 59
 var resume = true;
-
+var timer;
 
 $('div.only-with-full-nav').append(button);
 
@@ -18,13 +18,15 @@ $('div.only-with-full-nav').on('submit','#set-time-box',function(e){
   $('#timebox-app').append("<div id='timer'> <span id='timer_mnts'></span>:<span id='timer_scds'></span> </div>");
   $('#timebox-app').append("<button class='btn btn-sm sidebar-button' id='time-box-pause' type='button'>Pause</button>")
   $('#timebox-app').append("<button class='btn btn-sm sidebar-button' id='time-box-reset' type='button'>Reset</button>")
-  if($('#time-box-minutes-limit').val()){
-    minutes = parseInt($('#time-box-minutes-limit').val()) -1;
-    minutesReset = parseInt($('#time-box-minutes-limit').val()) -1;
-  }
+  debugger
+
+  minutes = parseInt($('#time-box-minutes-limit').val());
+  minutesReset = parseInt($('#time-box-minutes-limit').val()) -1;
+  chrome.storage.sync.set({'minutes': minutes * 60 , 'start': Date.now()})
   $('#timer_mnts').html(minutes);
-  $('#timer_scds').html(seconds);
-  setInterval(myTimer, 1000);
+  $('#timer_scds').html('00');
+
+  timer = setInterval(myTimer, 1000);
 })
 
 $('div.only-with-full-nav').on('click','#time-box-pause',function(){
@@ -41,23 +43,39 @@ $('div.only-with-full-nav').on('click','#time-box-reset',function(){
 })
 
 function myTimer(){
-  if(resume == true){
-    if(minutes == 0 && seconds == 0){
-      if (confirm("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?") == true){
-        resetTimer();
-      }
-    }
-    if(seconds == 0){
-      // alert("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?"); // This is for testing
-      seconds = 60
-      minutes -= 1
-      $('#timer_mnts').html(minutes);
+  // if(resume == true){
+  //   if(minutes == 0 && seconds == 0){
+  //     if (confirm("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?") == true){
+  //       resetTimer();
+  //     }
+  //   }
 
-      // document.getElementById('timer_mnts').innerHTML = minutes;
-    }
-    $('#timer_scds').html(seconds - 1);
-    seconds -= 1;
-  }
+    chrome.storage.sync.get(['start', 'minutes'], function(res) {
+      var timePassed = (Date.now() - res.start) / 1000
+      if (timePassed > res.minutes) {
+        alert('times up bub');
+        clearInterval(timer);
+      } else {
+        var minutesLeft = Math.floor((res.minutes - timePassed) / 60)
+        var secondsLeft = Math.floor((res.minutes - timePassed) % 60)
+
+        $('#timer_mnts').html(minutesLeft);
+        $('#timer_scds').html(secondsLeft);
+      }
+      message('Settings saved');
+    })
+
+  //   if(seconds == 0){
+  //     // alert("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?"); // This is for testing
+  //     seconds = 60
+  //     minutes -= 1
+  //     $('#timer_mnts').html(minutes);
+
+  //     // document.getElementById('timer_mnts').innerHTML = minutes;
+  //   }
+  //   $('#timer_scds').html(seconds - 1);
+  //   seconds -= 1;
+  // }
 }
 
 function resetTimer(){
