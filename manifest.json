@@ -16,8 +16,13 @@
     "css": ["timebox.css"]
   }],
 
+  "background": {
+    "scripts" : ["background.js"]
+  }
+
   "permissions": [
    "activeTab",
+   "storage",
    "*://*.github.com/*/*"
    ]
 }

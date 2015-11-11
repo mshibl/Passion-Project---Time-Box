@@ -1,20 +1,14 @@
-/*body {
+body {
   counter-reset:section;
-  background-color: gray;
   font-family: Verdana;
   max-width: 700px;
   width: 400px;
   width: 200px;
   margin: 0 auto;
-}*/
-
-/*h1{
-  color: yellow;
-  font-size: 12px;
 }
-*/
 
 #timer {
+  display: none;
   text-align: center;
   color: #6CC644;
   font-size: 30px;
@@ -31,6 +25,7 @@
 }
 
 #timebox-app {
+  display: none;
   border: 1px solid #D8D8D8;
   padding: 5px;
 }
