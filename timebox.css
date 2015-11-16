@@ -2,19 +2,19 @@ body {
   counter-reset:section;
   font-family: Verdana;
   max-width: 700px;
-  width: 400px;
   width: 200px;
   margin: 0 auto;
 }
 
 #timer {
   display: none;
-  text-align: center;
+  /*text-align: center;*/
   color: #6CC644;
   font-size: 30px;
   font-family: monospace;
   padding: 0px 10px 10px 10px;
   margin: auto;
+  text-align: center;
 }
 
 #timebox-app h4{
@@ -25,20 +25,42 @@ body {
 }
 
 #timebox-app {
-  display: none;
   border: 1px solid #D8D8D8;
   padding: 5px;
 }
 
+#time-box-setter {
+  display: none;
+}
+
 #timebox-app form{
-  text-align: center;
   padding: 10px 10px 10px 10px;
+  color: #6F6F6F;
 }
 
 #timebox-app label{
   color: #6F6F6F;
 }
 
-#start-timebox-button {
-  margin: 5px 0px 0px 0px;
+#inputs {
+  text-align: right;
+}
+
+.submit {
+  width: 60%;
+}
+
+.submit:hover {
+  color: gray;
+}
+
+#submit {
+  text-align: center;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
 }

@@ -1,106 +1,86 @@
 $(document).ready(function(){
-  var minutes;
-  var minutesReset;
-  var seconds;
-  var resume = true;
-  var timer;
+  var timerProcess;
+
+  function updateTimerView(){
+    chrome.storage.sync.get(['startTime','timeLimit'],function(timerData){
+      var timePassed = (Date.now() - timerData.startTime) / 1000
+      var minutesLeft = Math.floor((timerData.timeLimit - timePassed) / 60)
+      var secondsLeft = Math.floor((timerData.timeLimit - timePassed) % 60)
+
+      $('#timer_mnts').html(minutesLeft);
+      $('#timer_scds').html(secondsLeft);
+    })
+  }
+
+  function startTimer(){
+    $('#timer').show();
+    $('#time-box-setter').hide();
+    timerProcess = setInterval(updateTimerView,1000)
+  }
+
+  function showSetter(){
+    $('#timer').hide();
+    $('#time-box-setter').show();
+  }
+
 
   // Test if timer was already running
-  chrome.storage.sync.get('timerRunning',function(res){
-    if (res.timerRunning == true){
-        chrome.storage.sync.get(['start', 'minutes'], function(res) {
-          var timePassed = (Date.now() - res.start) / 1000
-          if (timePassed > res.minutes) {
-            chrome.storage.sync.set({'timerRunning': false}, function() {
-            $('#timebox-app').show();
-            clearInterval(timer);
-          })
-        } else {
-          $('#timer').show();
-          timer = setInterval(myTimer, 1000);
-        }
-      })
+  chrome.storage.sync.get(['timerRunning','startTime','timeLimit'],function(timerData){
+    if (timerData.timerRunning == true){
+      startTimer();
     } else {
-      $('#timebox-app').show();
+      showSetter();
     }
   })
 
   // Initializing Timer:
   $('form').on('submit',function(e){
     e.preventDefault();
-    console.log('we are here')
-    $('#set-time-box').hide();
-    $('#timer').show();
 
-    minutes = parseInt($('#time-box-minutes-limit').val());
-    minutesReset = parseInt($('#time-box-minutes-limit').val()) -1;
+    var port = chrome.extension.connect({name: "Start Background Timer"});
+    port.postMessage([parseInt($('#time-box-minutes-limit').val()),parseInt($('#time-box-break-limit').val())])
 
-    chrome.storage.sync.set({'timerRunning': true,'minutes': minutes * 60 , 'start': Date.now()})
-
-    $('#timer_mnts').html(minutes);
-    $('#timer_scds').html(0);
-
-    timer = setInterval(myTimer, 1000);
+    startTimer()
   })
 
-  // Pausing Timer:
-  $('div.only-with-full-nav').on('click','#time-box-pause',function(){
-    resume = !resume;
-    $('#time-box-p`1ause').text(function(i,text){
-      return text === 'Resume' ? 'Pause' : 'Resume';
+  // // Pausing Timer:
+  // $('body').on('click','#time-box-pause',function(){
+  //   // resume = !resume;
+  //   var port = chrome.extension.connect({name: "Pause Background Timer"});
+
+  //   if (resume){
+  //     port.postMessage('resume')
+  //   } else {
+  //     port.postMessage('pause')
+  //   }
+
+  //   $('#time-box-pause').text(function(i,text){
+  //     return text === 'Resume' ? 'Pause' : 'Resume';
+  //   })
+  // })
+
+  // // Reseting Timer:
+  // $('div.only-with-full-nav').on('click','#time-box-reset',function(){
+  //   if (confirm('this will reset the timer') == true){
+  //     resetTimer();
+  //   };
+  // });
+
+  // function resetTimer(){
+  //   seconds = 60;
+  //   minutes = minutesReset;
+  //   $('#timer_scds').html(seconds-1);
+  //   $('#timer_mnts').html(minutes);
+  // }
+
+  // Stop button
+  $('body').on('click','#time-box-stop',function(){
+    var port = chrome.extension.connect({name: "Stop Background Timer"});
+    port.postMessage('stop')
+    clearInterval(timerProcess);
+    chrome.storage.sync.set({'timerRunning': false}, function() {
+    $("#time-box-setter").show();
+    $('#timer').hide();
     })
   })
-
-  // Reseting Timer:
-  $('div.only-with-full-nav').on('click','#time-box-reset',function(){
-    if (confirm('this will reset the timer') == true){
-      resetTimer();
-    };
-  });
-
-  function resetTimer(){
-    seconds = 60;
-    minutes = minutesReset;
-    $('#timer_scds').html(seconds-1);
-    $('#timer_mnts').html(minutes);
-  }
-
-  // Running Timer:
-  function myTimer(){
-    // if(resume == true){
-    //   if(minutes == 0 && seconds == 0){
-    //     if (confirm("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?") == true){
-    //       resetTimer();
-    //     }
-    //   }
-
-      chrome.storage.sync.get(['start', 'minutes'], function(res) {
-        var timePassed = (Date.now() - res.start) / 1000
-        if (timePassed > res.minutes) {
-          chrome.storage.sync.set({'timerRunning': false}, function() {
-            // alert('times up bub');
-            clearInterval(timer);
-          })
-        } else {
-          var minutesLeft = Math.floor((res.minutes - timePassed) / 60)
-          var secondsLeft = Math.floor((res.minutes - timePassed) % 60)
-
-          $('#timer_mnts').html(minutesLeft);
-          $('#timer_scds').html(secondsLeft);
-        }
-        // message('Settings saved');
-      })
-
-    //   if(seconds == 0){
-    //     // alert("Time limit reached!\n\nCommit your work and take a break!\n\n\nDo you wish to reset the timer?"); // This is for testing
-    //     seconds = 60
-    //     minutes -= 1
-    //     $('#timer_mnts').html(minutes);
-
-    //     // document.getElementById('timer_mnts').innerHTML = minutes;
-    //   }
-    //   $('#timer_scds').html(seconds - 1);
-    //   seconds -= 1;
-    // }
-  }
 });

@@ -3,24 +3,34 @@
   <head>
     <title>Github Auto-Commit</title>
     <link rel="stylesheet" href="/timebox.css">
-    <script src="/jquery-1.11.3.js"></script>
+    <script src="jquery-1.11.3.js"></script>
     <script src="popup.js"></script>
   </head>
 
   <body>
     <div id="timebox-app">
-      <h4>Time Box App</h4>
-      <form id='set-time-box'>
-        <label>Minutes: </label>
-        <input id='time-box-minutes-limit' type='number' min='1' max='60' value='25' placeholder='25'>
-        <input id='start-timebox-button' type='submit' value='Start!'>
+      <h4>Time Box</h4>
+      <hr>
+      <form id='time-box-setter'>
+        <div id='inputs'>
+        <label>Time Box: </label>
+        <input id='time-box-minutes-limit' type='number' min='1' max='60' value='25' placeholder='25'> minutes
+        <br>
+        <br>
+        <label>Break: </label>
+        <input id='time-box-break-limit' type='number' min='1' max='99' value='5' placeholder='5'> minutes
+        <br>
+        <br>
+        </div>
+        <div id="submit"><input class="submit" id='start-timebox-button' type='submit' value='Start!'></div>
       </form>
-    </div>
 
-    <div id='timer'>
-      <span id='timer_mnts'></span>:<span id='timer_scds'></span><br>
-      <button class='btn btn-sm sidebar-button' id='time-box-pause' type='button'>Pause</button>
-      <button class='btn btn-sm sidebar-button' id='time-box-reset' type='button'>Reset</button>
+      <div id='timer'>
+        <span id='timer_mnts'></span>:<span id='timer_scds'></span><br>
+        <!-- <button class='btn btn-sm sidebar-button' id='time-box-pause' type='button'>Pause</button> -->
+        <!-- <button class='btn btn-sm sidebar-button' id='time-box-reset' type='button'>Reset</button> -->
+        <div id="submit"><button class='submit' id='time-box-stop' type='button'>Stop</button></div>
+      </div>
     </div>
   </body>
 </html>
