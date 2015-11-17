@@ -3,12 +3,12 @@ $(document).ready(function(){
 
   function updateTimerView(){
     chrome.storage.sync.get(['startTime','timeLimit'],function(timerData){
-      var timePassed = (Date.now() - timerData.startTime) / 1000
-      var minutesLeft = Math.floor((timerData.timeLimit - timePassed) / 60)
-      var secondsLeft = Math.floor((timerData.timeLimit - timePassed) % 60)
+        timePassed = (Date.now() - timerData.startTime) / 1000
+        minutesLeft = Math.floor((timerData.timeLimit - timePassed) / 60)
+        secondsLeft = Math.floor((timerData.timeLimit - timePassed) % 60)
 
-      $('#timer_mnts').html(minutesLeft);
-      $('#timer_scds').html(secondsLeft);
+        $('#timer_mnts').text(minutesLeft);
+        $('#timer_scds').text(secondsLeft);
     })
   }
 
@@ -25,8 +25,12 @@ $(document).ready(function(){
 
 
   // Test if timer was already running
-  chrome.storage.sync.get(['timerRunning','startTime','timeLimit'],function(timerData){
+  chrome.storage.sync.get(['timerRunning','startTime','timeLimit','breakTime'],function(timerData){
     if (timerData.timerRunning == true){
+      if (timerData.breakTime == true){
+        $('h4').html('Break Time').css('color','#6CC644')
+      }
+      updateTimerView();
       startTimer();
     } else {
       showSetter();
@@ -38,8 +42,10 @@ $(document).ready(function(){
     e.preventDefault();
 
     var port = chrome.extension.connect({name: "Start Background Timer"});
-    port.postMessage([parseInt($('#time-box-minutes-limit').val()),parseInt($('#time-box-break-limit').val())])
+    chrome.storage.sync.set({'timerRunning': true, 'timeLimit': (parseInt($('#time-box-minutes-limit').val())*60), 'startTime': Date.now(), 'breakLimit':(parseInt($('#time-box-break-limit').val())*60)})
+    port.postMessage('start')
 
+    updateTimerView();
     startTimer()
   })
 
