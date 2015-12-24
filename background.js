@@ -12,7 +12,6 @@ function timerReset(){
   startTime = Date.now();
 }
 
-
 function notification(){
   var notification = confirm('Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break\n\nChoose cancel if you wish to stop ..');
   if (notification == true){
@@ -27,27 +26,6 @@ function notification(){
   }
 
 }
-
-// function timer(){
-//   timePassed = (Date.now() - startTime) / 1000
-//   if (timePassed > timeLimit) {
-//     if (breakTimerOn){
-//       breakTimerOn = false;
-
-//     }
-//     console.log('timer done!')
-//     chrome.storage.sync.set({'timerRunning': false}, function() {
-//       // This is the alert that will be displayed to the user once the timer is done
-//       var notification = confirm('Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break\n\nChoose cancel if you wish to stop ..')
-//       if (notification == true){
-//         breakTimerOn = true;
-//         setTimeout(timerReset,breakLimit);
-//       } else {
-//         clearInterval(timerProcess);
-//       }
-//     })
-//   }
-// }
 
 // Connection from popup.js when user starts the timer
 chrome.extension.onConnect.addListener(function(port){

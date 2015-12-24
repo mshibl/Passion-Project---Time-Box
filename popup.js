@@ -23,7 +23,6 @@ $(document).ready(function(){
     $('#time-box-setter').show();
   }
 
-
   // Test if timer was already running
   chrome.storage.sync.get(['timerRunning','startTime','timeLimit','breakTime'],function(timerData){
     if (timerData.timerRunning == true){
@@ -48,36 +47,6 @@ $(document).ready(function(){
     updateTimerView();
     startTimer()
   })
-
-  // // Pausing Timer:
-  // $('body').on('click','#time-box-pause',function(){
-  //   // resume = !resume;
-  //   var port = chrome.extension.connect({name: "Pause Background Timer"});
-
-  //   if (resume){
-  //     port.postMessage('resume')
-  //   } else {
-  //     port.postMessage('pause')
-  //   }
-
-  //   $('#time-box-pause').text(function(i,text){
-  //     return text === 'Resume' ? 'Pause' : 'Resume';
-  //   })
-  // })
-
-  // // Reseting Timer:
-  // $('div.only-with-full-nav').on('click','#time-box-reset',function(){
-  //   if (confirm('this will reset the timer') == true){
-  //     resetTimer();
-  //   };
-  // });
-
-  // function resetTimer(){
-  //   seconds = 60;
-  //   minutes = minutesReset;
-  //   $('#timer_scds').html(seconds-1);
-  //   $('#timer_mnts').html(minutes);
-  // }
 
   // Stop button
   $('body').on('click','#time-box-stop',function(){
