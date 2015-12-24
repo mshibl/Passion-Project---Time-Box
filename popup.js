@@ -40,12 +40,6 @@ $(document).ready(function(){
   $('form').on('submit',function(e){
     e.preventDefault();
 
-    // Notification when starting the time-box
-      var notification = new Notification('Notification title', {
-        icon: '48PX.png',
-        body: "Time Box is now set and running!",
-      });
-
     var port = chrome.extension.connect({name: "Start Background Timer"});
     chrome.storage.sync.set({'timerRunning': true, 'timeLimit': (parseInt($('#time-box-minutes-limit').val())*60), 'startTime': Date.now(), 'breakLimit':(parseInt($('#time-box-break-limit').val())*60)})
     port.postMessage('start')

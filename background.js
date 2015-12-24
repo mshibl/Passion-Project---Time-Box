@@ -13,7 +13,12 @@ function timerReset(){
 }
 
 function notification(){
-  var notification = confirm('Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break\n\nChoose cancel if you wish to stop ..');
+  // Notification when starting the time-box
+  var notification = new Notification('Notification title', {
+    icon: '48PX.png',
+    body: 'Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break',
+  });
+  // var notification = confirm('Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break\n\nChoose cancel if you wish to stop ..');
   if (notification == true){
     chrome.storage.sync.set({'timeLimit': breakLimit , 'startTime': Date.now(), 'breakTime': true})
     setTimeout(function(){
