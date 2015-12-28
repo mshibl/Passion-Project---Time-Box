@@ -13,10 +13,14 @@ function timerReset(){
 }
 
 function notification(){
-  // Notification when starting the time-box
   var notification = new Notification('Notification title', {
     icon: '48PX.png',
-    body: 'Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break',
+    title: 'Time Limit Reached!'
+    body: 'Timer will restart after the ' + breakLimit/60 + ' minutes break',
+    // buttons: [{
+    //   title: 'Test Button',
+    //   icon: '16PX.png'
+    // }]
   });
   // var notification = confirm('Time Limit Reached!\nTimer will restart after the ' + breakLimit/60 + ' minutes break\n\nChoose cancel if you wish to stop ..');
   if (notification == true){
