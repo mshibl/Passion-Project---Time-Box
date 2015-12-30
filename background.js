@@ -17,9 +17,8 @@ var notification=chrome.notifications.create("", {
     type:    "basic",
     iconUrl: "icons/48PX.png",
     title:   "Time Limit Reached",
-    // message: 'Timer will restart after the ' + breakLimit/60 + ' minutes break',
+    message: 'Timer will restart after the ' + breakLimit/60 + ' minutes break',
     // contextMessage: "It's about time...",
-    contextMessage: 'Timer will restart after the ' + breakLimit/60 + ' minutes break',
     buttons: [{
         title: "Stop the timer",
         iconUrl: "icons/stopButton.png"
